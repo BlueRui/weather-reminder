@@ -9,15 +9,15 @@ class Reminder(models.Model):
    ALWAYS = 0
    RAIN = 1
    SNOW = 2
-   TEMPDROP3F = 3
-   TEMPRISE3F = 4
+   TEMPDROP5F = 3
+   TEMPRISE5F = 4
    MAX_CHOICES = 5
    WARNING_TEXT = [
        'Always',
        'Raining tomorrow',
        'Snowing tomorrow',
-       'Temperature dropping by 3F tomorrow',
-       'Temperature rising by 3F tomorrow',
+       'Temperature dropping by 5F tomorrow',
+       'Temperature rising by 5F tomorrow',
    ]
    WARNING_CHOICE = [(i, WARNING_TEXT[i]) for i in range(MAX_CHOICES)]
    user = models.ForeignKey(User)

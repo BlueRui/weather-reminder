@@ -14,7 +14,7 @@ def manage(request):
     if request.user.is_authenticated():
         user_id = request.user.id
     else:
-        return HttpResponseRedirect("/admin/login/")
+        return HttpResponseRedirect("/accounts/login/")
     if request.method == 'POST':
         post_form = AddReminderForm(request.POST)
         if post_form.is_valid():
@@ -28,7 +28,7 @@ def manage(request):
 
 def del_reminder(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect("/admin/login/")
+        return HttpResponseRedirect("/accounts/login/")
     try:
         reminder_id = int(request.GET.get('id', ''))
         p = Reminder.objects.get(id=int(reminder_id))
@@ -66,7 +66,7 @@ def test_email(request):
     if request.user.is_authenticated():
         user_id = request.user.id
     else:
-        return HttpResponseRedirect("/admin/login/")
+        return HttpResponseRedirect("/accounts/login/")
     reminders = Reminder.objects.filter(user_id=user_id)
     # De-duplicate zipcode.
     zipcodes = set()
@@ -127,13 +127,13 @@ def generate_warnings(data):
                 Reminder.RAIN] = warning_text + " It will be raining tomorrow, please remember to take your umbrella."
         if tomorrow_weather['weather'][0]['id'] in SNOW_CODES:
             warnings[Reminder.SNOW] = warning_text + " It will be snowing tomorrow, please drive carefully."
-        if (float(tomorrow_weather['temp']['min']) - float(today_weather['temp']['min']) <= -3 or
-                        float(tomorrow_weather['temp']['max']) - float(today_weather['temp']['max']) <= -3):
+        if (float(tomorrow_weather['temp']['min']) - float(today_weather['temp']['min']) <= -5 or
+                        float(tomorrow_weather['temp']['max']) - float(today_weather['temp']['max']) <= -5):
             warnings[
-                Reminder.TEMPDROP3F] = warning_text + " The temperature will drop by more than 3 F, please wear warmer clothes."
-        if (float(tomorrow_weather['temp']['min']) - float(today_weather['temp']['min']) >= 3 or
-                        float(tomorrow_weather['temp']['max']) - float(today_weather['temp']['max']) >= 3):
-            warnings[Reminder.TEMPRISE3F] = warning_text + " The temperature will rise by more than 3 F."
+                Reminder.TEMPDROP5F] = warning_text + " The temperature will drop by more than 5 F, please wear warmer clothes."
+        if (float(tomorrow_weather['temp']['min']) - float(today_weather['temp']['min']) >= 5 or
+                        float(tomorrow_weather['temp']['max']) - float(today_weather['temp']['max']) >= 5):
+            warnings[Reminder.TEMPRISE5F] = warning_text + " The temperature will rise by more than 5 F."
     except:
         print(traceback.format_exc())
     return warnings
