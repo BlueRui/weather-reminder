@@ -25,7 +25,8 @@ SECRET_KEY = 'mh35%1)dkycu7pb0-%3&(exz+33pbce@o0hi6if34ttt5@mjlp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = 'collected_static'
 
 # Application definition
 
@@ -94,7 +95,7 @@ DATABASES = {
         'NAME': 'weather',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
+	    'HOST': 'test-mysql',
         'PORT': '3306',
     }
 }
