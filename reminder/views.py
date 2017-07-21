@@ -7,7 +7,8 @@ from django.contrib import auth
 from django.core.mail import EmailMessage
 from models import Reminder
 from forms import AddReminderForm
-
+import mailjet_rest
+import requests_toolbelt.adapters.appengine
 
 def manage(request):
     user_id = None
@@ -52,12 +53,14 @@ def get_weather(zipcode):
 
 
 def generate_weather_string(data):
-    return "The weather condition will be %s in %s on %s. The temperature will be %s to %s F." % (
+    return "The weather condition will be %s in %s on %s. The temperature will be %s to %s F, %s to %s C." % (
         data['list'][1]['weather'][0]['main'],
         data['city']['name'],
         datetime.fromtimestamp(data['list'][1]['dt']).strftime('%m/%d/%Y'),
-        data['list'][1]['temp']['min'],
-        data['list'][1]['temp']['max'],
+        round(data['list'][1]['temp']['min'], 1),
+        round(data['list'][1]['temp']['max'], 1),
+        round((data['list'][1]['temp']['min'] - 32) * 5 / 9.0, 1),
+        round((data['list'][1]['temp']['max'] - 32) * 5 / 9.0, 1),
     )
 
 

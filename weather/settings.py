@@ -19,14 +19,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
+email_config = dict()
+with open(os.path.join(BASE_DIR, 'weather', 'email_config.json')) as json_file:
+    email_config = json.load(json_file)
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'mh35%1)dkycu7pb0-%3&(exz+33pbce@o0hi6if34ttt5@mjlp'
+SECRET_KEY = str(email_config['SECRET_KEY'])
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-STATIC_ROOT = 'collected_static'
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django.contrib.sites',
+    'anymail',
 ]
 
 SITE_ID = 1
@@ -95,7 +99,7 @@ DATABASES = {
         'NAME': 'weather',
         'USER': 'root',
         'PASSWORD': 'root',
-	    'HOST': 'test-mysql',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -136,16 +140,22 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-email_config = dict()
-with open(os.path.join(BASE_DIR, 'weather', 'email_config.json')) as json_file:
-    email_config = json.load(json_file)
-EMAIL_USE_TLS = email_config['EMAIL_USE_TLS']
-EMAIL_HOST = str(email_config['EMAIL_HOST'])
-EMAIL_PORT = email_config['EMAIL_PORT']
-EMAIL_HOST_USER = str(email_config['EMAIL_HOST_USER'])
-EMAIL_HOST_PASSWORD = str(email_config['EMAIL_HOST_PASSWORD'])
-DEFAULT_FROM_EMAIL = str(email_config['DEFAULT_FROM_EMAIL'])
 
+
+# EMAIL_USE_TLS = email_config['EMAIL_USE_TLS']
+# EMAIL_HOST = str(email_config['EMAIL_HOST'])
+# EMAIL_PORT = email_config['EMAIL_PORT']
+# EMAIL_HOST_USER = str(email_config['EMAIL_HOST_USER'])
+# EMAIL_HOST_PASSWORD = str(email_config['EMAIL_HOST_PASSWORD'])
+# DEFAULT_FROM_EMAIL = str(email_config['DEFAULT_FROM_EMAIL'])
+ANYMAIL = {
+    "MAILJET_API_KEY": str(email_config['MAILJET_API_KEY']),
+    "MAILJET_SECRET_KEY": str(email_config['MAILJET_SECRET_KEY']),
+}
+
+DEFAULT_FROM_EMAIL = str(email_config['DEFAULT_FROM_EMAIL'])
+EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+MAILJET_API_URL = "https://api.mailjet.com/v3"
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
