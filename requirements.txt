@@ -6,4 +6,4 @@ Flask==0.12.2
 requests==2.18.1
 requests-toolbelt==0.8.0
 mailjet-rest==1.3.0
-anymail==0.10
+django-anymail[mailjet]==0.11

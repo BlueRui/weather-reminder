@@ -29,7 +29,8 @@ SECRET_KEY = str(email_config['SECRET_KEY'])
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = 'collected_static'
 
 # Application definition
 
@@ -99,7 +100,7 @@ DATABASES = {
         'NAME': 'weather',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
+        'HOST': 'test-mysql',
         'PORT': '3306',
     }
 }
